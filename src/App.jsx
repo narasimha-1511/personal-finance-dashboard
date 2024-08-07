@@ -1,38 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Dashboard from "./components/Dashboard";
 import TransactionForm from "./components/TransactionForm";
 import CategoryFilter from "./components/CategoryFilter";
 import Summary from "./components/Summary";
 
 function App() {
-  const [transactions, setTransactions] = useState([
-    {
-      id: 1,
-      description: "Grocery shopping",
-      amount: -50,
-      date: "2024-08-07",
-      category: "Food",
-    },
-    {
-      id: 2,
-      description: "Salary",
-      amount: 2000,
-      date: "2024-08-01",
-      category: "Income",
-    },
-    {
-      id: 3,
-      description: "Movie tickets",
-      amount: -30,
-      date: "2024-08-05",
-      category: "Entertainment",
-    },
-  ]);
+  const [transactions, setTransactions] = useState(() => {
+    const savedTransactions = localStorage.getItem("transactions");
+    return savedTransactions
+      ? JSON.parse(savedTransactions)
+      : [
+          {
+            id: 1,
+            description: "Grocery shopping",
+            amount: -50,
+            date: "2024-08-07",
+            category: "Food",
+          },
+          {
+            id: 2,
+            description: "Salary",
+            amount: 2000,
+            date: "2024-08-01",
+            category: "Income",
+          },
+          {
+            id: 3,
+            description: "Movie tickets",
+            amount: -30,
+            date: "2024-08-05",
+            category: "Entertainment",
+          },
+        ];
+  });
 
   const [selectedCategory, setSelectedCategory] = useState("All");
 
+  useEffect(() => {
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+  }, [transactions]);
+
   const addTransaction = (newTransaction) => {
-    setTransactions([...transactions, { ...newTransaction, id: Date.now() }]);
+    setTransactions((prevTransactions) => [
+      ...prevTransactions,
+      { ...newTransaction, id: Date.now() },
+    ]);
+  };
+
+  const deleteTransaction = (id) => {
+    setTransactions((prevTransactions) =>
+      prevTransactions.filter((t) => t.id !== id)
+    );
   };
 
   const filteredTransactions =
@@ -49,7 +67,10 @@ function App() {
         selectedCategory={selectedCategory}
         onCategoryChange={setSelectedCategory}
       />
-      <Dashboard transactions={filteredTransactions} />
+      <Dashboard
+        transactions={filteredTransactions}
+        onDeleteTransaction={deleteTransaction}
+      />
     </div>
   );
 }

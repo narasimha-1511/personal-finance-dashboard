@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function TransactionForm({ onAddTransaction }) {
-  const [description, setDescription] = useState('');
-  const [amount, setAmount] = useState('');
-  const [date, setDate] = useState('');
-  const [category, setCategory] = useState('');
+  const [description, setDescription] = useState("");
+  const [amount, setAmount] = useState("");
+  const [date, setDate] = useState("");
+  const [category, setCategory] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,10 +14,10 @@ function TransactionForm({ onAddTransaction }) {
       date,
       category,
     });
-    setDescription('');
-    setAmount('');
-    setDate('');
-    setCategory('');
+    setDescription("");
+    setAmount("");
+    setDate("");
+    setCategory("");
   };
 
   return (
