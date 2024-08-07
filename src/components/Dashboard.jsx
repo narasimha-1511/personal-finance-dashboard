@@ -1,11 +1,11 @@
 import React from 'react';
 import TransactionList from './TransactionList';
 
-function Dashboard() {
+function Dashboard({ transactions }) {
   return (
     <div className="Dashboard">
       <h2>Your Transactions</h2>
-      <TransactionList />
+      <TransactionList transactions={transactions} />
     </div>
   );
 }
