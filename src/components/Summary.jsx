@@ -1,7 +1,8 @@
 import React from "react";
 import IncomeExpenseChart from "./IncomeExpenseChart";
+import GoalProjectionChart from "./GoalProjectionChart";
 
-function Summary({ transactions, budgets }) {
+function Summary({ transactions, budgets, goals }) {
   const income = transactions
     .filter((t) => t.amount > 0)
     .reduce((sum, t) => sum + t.amount, 0);
@@ -24,6 +25,7 @@ function Summary({ transactions, budgets }) {
         <p>Total Budget: ${totalBudget.toFixed(2)}</p>
       </div>
       <IncomeExpenseChart income={income} expenses={expenses} />
+      <GoalProjectionChart goals={goals} balance={balance} />
     </div>
   );
 }
