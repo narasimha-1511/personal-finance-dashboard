@@ -1,6 +1,6 @@
-import React from 'react';
-import TransactionList from './TransactionList';
-import PieChart from './PieChart';
+import React from "react";
+import TransactionList from "./TransactionList";
+import PieChart from "./PieChart";
 
 function Dashboard({ transactions }) {
   return (
