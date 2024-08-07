@@ -1,7 +1,7 @@
 import React from "react";
 import IncomeExpenseChart from "./IncomeExpenseChart";
 
-function Summary({ transactions }) {
+function Summary({ transactions, budgets }) {
   const income = transactions
     .filter((t) => t.amount > 0)
     .reduce((sum, t) => sum + t.amount, 0);
@@ -12,6 +12,8 @@ function Summary({ transactions }) {
 
   const balance = income - expenses;
 
+  const totalBudget = budgets.reduce((sum, b) => sum + b.limit, 0);
+
   return (
     <div className="Summary">
       <h2>Financial Summary</h2>
@@ -19,6 +21,7 @@ function Summary({ transactions }) {
         <p>Total Income: ${income.toFixed(2)}</p>
         <p>Total Expenses: ${expenses.toFixed(2)}</p>
         <p>Balance: ${balance.toFixed(2)}</p>
+        <p>Total Budget: ${totalBudget.toFixed(2)}</p>
       </div>
       <IncomeExpenseChart income={income} expenses={expenses} />
     </div>
