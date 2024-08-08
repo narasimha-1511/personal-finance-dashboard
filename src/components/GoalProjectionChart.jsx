@@ -1,5 +1,28 @@
+// In SpendingTrendsChart.js and GoalProjectionChart.js
 import React from "react";
 import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+// ... rest of the component code
 
 function GoalProjectionChart({ goals, balance }) {
   const data = {
@@ -40,7 +63,7 @@ function GoalProjectionChart({ goals, balance }) {
   return (
     <div className="GoalProjectionChart">
       <h3>Goal Projections</h3>
-      <Line data={data} options={options} />
+      <Line data={data} options={options} id="goal-trends-chart" />
     </div>
   );
 }

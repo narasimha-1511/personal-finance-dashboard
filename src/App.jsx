@@ -8,6 +8,8 @@ import BudgetForm from "./components/BudgetForm";
 import BudgetList from "./components/BudgetList";
 import GoalForm from "./components/GoalForm";
 import GoalList from "./components/GoalList";
+import SpendingTrendsChart from "./components/SpendingTrendsChart";
+import ExpenseHeatmap from "./components/ExpenseHeatMap";
 
 function App() {
   const [transactions, setTransactions] = useState(() => {
@@ -106,6 +108,8 @@ function App() {
         onDeleteGoal={deleteGoal}
         onUpdateGoal={updateGoal}
       />
+      <SpendingTrendsChart transactions={transactions} />
+      <ExpenseHeatmap transactions={transactions} />
     </div>
   );
 }
