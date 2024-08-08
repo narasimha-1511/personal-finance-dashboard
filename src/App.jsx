@@ -10,6 +10,8 @@ import GoalForm from "./components/GoalForm";
 import GoalList from "./components/GoalList";
 import SpendingTrendsChart from "./components/SpendingTrendsChart";
 import ExpenseHeatmap from "./components/ExpenseHeatMap";
+import ReportGenerator from "./components/ReportGenerator";
+import LongTermTrendChart from "./components/LongTermTrendChart";
 
 function App() {
   const [transactions, setTransactions] = useState(() => {
@@ -110,6 +112,8 @@ function App() {
       />
       <SpendingTrendsChart transactions={transactions} />
       <ExpenseHeatmap transactions={transactions} />
+      <ReportGenerator transactions={transactions} />
+      <LongTermTrendChart transactions={transactions} />
     </div>
   );
 }
