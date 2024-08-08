@@ -1,5 +1,8 @@
-// App.js
 import React, { useState, useEffect } from "react";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme } from "../theme";
+import { GlobalStyles } from "../globalStyles";
+import Header from "./components/Header";
 import Dashboard from "./components/Dashboard";
 import TransactionForm from "./components/TransactionForm";
 import CategoryFilter from "./components/CategoryFilter";
@@ -9,27 +12,24 @@ import BudgetList from "./components/BudgetList";
 import GoalForm from "./components/GoalForm";
 import GoalList from "./components/GoalList";
 import SpendingTrendsChart from "./components/SpendingTrendsChart";
+import LongTermTrendChart from "./components/LongTermTrendChart";
 import ExpenseHeatmap from "./components/ExpenseHeatMap";
 import ReportGenerator from "./components/ReportGenerator";
-import LongTermTrendChart from "./components/LongTermTrendChart";
 
 function App() {
+  const [theme, setTheme] = useState("light");
   const [transactions, setTransactions] = useState(() => {
     const savedTransactions = localStorage.getItem("transactions");
     return savedTransactions ? JSON.parse(savedTransactions) : [];
   });
-
   const [budgets, setBudgets] = useState(() => {
     const savedBudgets = localStorage.getItem("budgets");
     return savedBudgets ? JSON.parse(savedBudgets) : [];
   });
-
   const [goals, setGoals] = useState(() => {
     const savedGoals = localStorage.getItem("goals");
     return savedGoals ? JSON.parse(savedGoals) : [];
   });
-
-  const [selectedCategory, setSelectedCategory] = useState("All");
 
   useEffect(() => {
     localStorage.setItem("transactions", JSON.stringify(transactions));
@@ -37,84 +37,59 @@ function App() {
     localStorage.setItem("goals", JSON.stringify(goals));
   }, [transactions, budgets, goals]);
 
-  const addTransaction = (newTransaction) => {
-    setTransactions((prevTransactions) => [
-      ...prevTransactions,
-      { ...newTransaction, id: Date.now() },
-    ]);
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
   };
-
-  const deleteTransaction = (id) => {
-    setTransactions((prevTransactions) =>
-      prevTransactions.filter((t) => t.id !== id)
-    );
-  };
-
-  const addBudget = (newBudget) => {
-    setBudgets((prevBudgets) => [
-      ...prevBudgets,
-      { ...newBudget, id: Date.now() },
-    ]);
-  };
-
-  const deleteBudget = (id) => {
-    setBudgets((prevBudgets) => prevBudgets.filter((b) => b.id !== id));
-  };
-
-  const addGoal = (newGoal) => {
-    setGoals((prevGoals) => [
-      ...prevGoals,
-      { ...newGoal, id: Date.now(), currentAmount: 0 },
-    ]);
-  };
-
-  const deleteGoal = (id) => {
-    setGoals((prevGoals) => prevGoals.filter((g) => g.id !== id));
-  };
-
-  const updateGoal = (id, amount) => {
-    setGoals((prevGoals) =>
-      prevGoals.map((g) =>
-        g.id === id ? { ...g, currentAmount: g.currentAmount + amount } : g
-      )
-    );
-  };
-
-  const filteredTransactions =
-    selectedCategory === "All"
-      ? transactions
-      : transactions.filter((t) => t.category === selectedCategory);
 
   return (
-    <div className="App">
-      <h1>Personal Finance Dashboard</h1>
-      <Summary transactions={transactions} budgets={budgets} goals={goals} />
-      <TransactionForm onAddTransaction={addTransaction} />
-      <BudgetForm onAddBudget={addBudget} />
-      <GoalForm onAddGoal={addGoal} />
-      <CategoryFilter
-        selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
-      />
-      <Dashboard
-        transactions={filteredTransactions}
-        onDeleteTransaction={deleteTransaction}
-      />
-      <BudgetList
-        budgets={budgets}
-        transactions={transactions}
-        onDeleteBudget={deleteBudget}
-      />
-      <GoalList
-        goals={goals}
-        onDeleteGoal={deleteGoal}
-        onUpdateGoal={updateGoal}
-      />
-      <SpendingTrendsChart transactions={transactions} />
-      <ExpenseHeatmap transactions={transactions} />
-      <ReportGenerator transactions={transactions} />
-      <LongTermTrendChart transactions={transactions} />
-    </div>
+    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+      <GlobalStyles />
+      <div className="App">
+        <Header toggleTheme={toggleTheme} />
+        <main>
+          <Summary
+            transactions={transactions}
+            budgets={budgets}
+            goals={goals}
+          />
+          <TransactionForm
+            onAddTransaction={(t) => setTransactions([...transactions, t])}
+          />
+          <BudgetForm onAddBudget={(b) => setBudgets([...budgets, b])} />
+          <GoalForm onAddGoal={(g) => setGoals([...goals, g])} />
+          <Dashboard
+            transactions={transactions}
+            onDeleteTransaction={(id) =>
+              setTransactions(transactions.filter((t) => t.id !== id))
+            }
+          />
+          <BudgetList
+            budgets={budgets}
+            transactions={transactions}
+            onDeleteBudget={(id) =>
+              setBudgets(budgets.filter((b) => b.id !== id))
+            }
+          />
+          <GoalList
+            goals={goals}
+            onDeleteGoal={(id) => setGoals(goals.filter((g) => g.id !== id))}
+            onUpdateGoal={(id, amount) =>
+              setGoals(
+                goals.map((g) =>
+                  g.id === id
+                    ? { ...g, currentAmount: g.currentAmount + amount }
+                    : g
+                )
+              )
+            }
+          />
+          <SpendingTrendsChart transactions={transactions} />
+          <ExpenseHeatmap transactions={transactions} />
+          <ReportGenerator transactions={transactions} />
+          <LongTermTrendChart transactions={transactions} />
+        </main>
+      </div>
+    </ThemeProvider>
   );
 }
 
