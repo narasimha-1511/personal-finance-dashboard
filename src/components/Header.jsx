@@ -6,6 +6,7 @@ const StyledHeader = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 20px 0;
+  width: 100%;
 `;
 
 const ThemeToggle = styled.button`

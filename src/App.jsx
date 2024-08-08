@@ -47,46 +47,56 @@ function App() {
       <div className="App">
         <Header toggleTheme={toggleTheme} />
         <main>
-          <Summary
-            transactions={transactions}
-            budgets={budgets}
-            goals={goals}
-          />
-          <TransactionForm
-            onAddTransaction={(t) => setTransactions([...transactions, t])}
-          />
-          <BudgetForm onAddBudget={(b) => setBudgets([...budgets, b])} />
-          <GoalForm onAddGoal={(g) => setGoals([...goals, g])} />
-          <Dashboard
-            transactions={transactions}
-            onDeleteTransaction={(id) =>
-              setTransactions(transactions.filter((t) => t.id !== id))
-            }
-          />
-          <BudgetList
-            budgets={budgets}
-            transactions={transactions}
-            onDeleteBudget={(id) =>
-              setBudgets(budgets.filter((b) => b.id !== id))
-            }
-          />
-          <GoalList
-            goals={goals}
-            onDeleteGoal={(id) => setGoals(goals.filter((g) => g.id !== id))}
-            onUpdateGoal={(id, amount) =>
-              setGoals(
-                goals.map((g) =>
-                  g.id === id
-                    ? { ...g, currentAmount: g.currentAmount + amount }
-                    : g
+          <section className="full-width">
+            <Summary
+              transactions={transactions}
+              budgets={budgets}
+              goals={goals}
+            />
+          </section>
+          <section className="forms">
+            <TransactionForm
+              onAddTransaction={(t) => setTransactions([...transactions, t])}
+            />
+            <BudgetForm onAddBudget={(b) => setBudgets([...budgets, b])} />
+            <GoalForm onAddGoal={(g) => setGoals([...goals, g])} />
+          </section>
+          <section className="full-width">
+            <Dashboard
+              transactions={transactions}
+              onDeleteTransaction={(id) =>
+                setTransactions(transactions.filter((t) => t.id !== id))
+              }
+            />
+          </section>
+          <section className="lists">
+            <BudgetList
+              budgets={budgets}
+              transactions={transactions}
+              onDeleteBudget={(id) =>
+                setBudgets(budgets.filter((b) => b.id !== id))
+              }
+            />
+            <GoalList
+              goals={goals}
+              onDeleteGoal={(id) => setGoals(goals.filter((g) => g.id !== id))}
+              onUpdateGoal={(id, amount) =>
+                setGoals(
+                  goals.map((g) =>
+                    g.id === id
+                      ? { ...g, currentAmount: g.currentAmount + amount }
+                      : g
+                  )
                 )
-              )
-            }
-          />
-          <SpendingTrendsChart transactions={transactions} />
-          <ExpenseHeatmap transactions={transactions} />
-          <ReportGenerator transactions={transactions} />
-          <LongTermTrendChart transactions={transactions} />
+              }
+            />
+          </section>
+          <section className="charts">
+            <SpendingTrendsChart transactions={transactions} />
+            <ExpenseHeatmap transactions={transactions} />
+            <ReportGenerator transactions={transactions} />
+            <LongTermTrendChart transactions={transactions} />
+          </section>
         </main>
       </div>
     </ThemeProvider>
